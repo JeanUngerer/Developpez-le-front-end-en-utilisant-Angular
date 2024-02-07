@@ -1,3 +1,35 @@
-<h2>Olympic games app</h2>
-<hr />
-<p>{{ (olympics$ | async)?.length }} data loaded</p>
+
+
+<div style="width: 100%; display: flex; flex-direction: row; height: 25vh;">
+  <img
+    src="assets/images/16663660107668_P2_banner.png"
+    alt="banner_olympics"
+  />
+
+  <img
+    style="width:100%; height:100%;"
+    src="assets/images/bannerfollow.png"
+    alt="banner_rest"
+  />
+</div>
+
+<div class="page-container">
+  <div class="card-title">Medals per Country</div>
+
+  <div class="flex-row">
+    <div class="card-headlines"><div>Number of JOs</div><div class="text-center-black">10</div></div>
+    <div class="card-headlines"><div>Number of Countries</div><div class="text-center-black">10</div></div>
+  </div>
+
+  <div class="card">
+    <app-pie-chart
+      class="chart-container"
+      id="medalsPieChart"
+      [chartId]="'idd'"
+      [pieDatas$]="pieDatas$.asObservable()"
+      (legendClick)="ActionOnLegendClick($event)"
+      (loadedGraph)="ngAfterViewInit()"
+    >
+    </app-pie-chart>
+  </div>
+</div>

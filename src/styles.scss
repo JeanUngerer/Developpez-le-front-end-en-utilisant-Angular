@@ -1,1 +1,45 @@
 /* You can add global styles to this file, and also import other style files */
+
+.card{
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  margin: 1rem;
+}
+
+.card-title{
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin: 1rem;
+  padding: 1rem;
+  border-radius: 10px;
+  background-color: lightseagreen;
+  color: white;
+  font-size: larger;
+}
+
+.card-headlines{
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  margin: 1rem;
+  padding: 1rem;
+  border: 2px solid;
+  border-radius: 10px;
+  border-color: lightseagreen;
+  color: darkgrey;
+  font-size: large;
+}
+
+.page-container{
+  padding-left: 1rem;
+  padding-right: 1rem;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
