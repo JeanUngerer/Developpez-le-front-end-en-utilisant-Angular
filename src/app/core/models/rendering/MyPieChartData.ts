@@ -1,4 +1,4 @@
-export interface PieData
+export interface MyPieChartData
 {
   name: string;
   value: number;

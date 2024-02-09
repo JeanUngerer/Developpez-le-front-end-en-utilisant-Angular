@@ -1,26 +1,29 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {MyPieChartData} from "../../core/models/rendering/MyPieChartData";
 import {Chart, ChartEvent, LegendElement, LegendItem} from "chart.js/auto";
-import ChartDataLabels from 'chartjs-plugin-datalabels';
 import {Observable, of, Subscription} from "rxjs";
+import ChartDataLabels from "chartjs-plugin-datalabels";
+import {MyLineChartData} from "../../core/models/rendering/MyLineChartData";
 
 @Component({
-  selector: 'app-pie-chart',
-  templateUrl: './pie-chart.component.html',
-  styleUrls: ['./pie-chart.component.scss']
+  selector: 'app-line-chart',
+  templateUrl: './line-chart.component.html',
+  styleUrls: ['./line-chart.component.scss']
 })
-export class PieChartComponent implements OnInit, OnDestroy, AfterViewInit {
+export class LineChartComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public myChart?: Chart;
 
   private subscriptions: Subscription[] = [];
-  @Input() pieDatas$: Observable<MyPieChartData[]> = of([]);
+  @Input() lineDatas$: Observable<MyLineChartData[]> = of([]);
 
-  pieDatas!: MyPieChartData[];
+  lineDatas!: MyLineChartData[];
   @Input() chartId!: string
-  @Input() customLegend = false;
+
+  @Input() lineLabel = '';
 
   @Input() legendClickActionGivenLegendText!: Function;
+  @Input() customLegend = false;
+  @Input() customLegendClick = false;
   @Output() legendClick = new EventEmitter<string>();
   @Output() graphClick = new EventEmitter<string>();
   @Output() loadedGraph = new EventEmitter<string>();
@@ -32,11 +35,13 @@ export class PieChartComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit(): void {
+
+
   }
 
   ngAfterViewInit(): void {
-    this.subscriptions.push(this.pieDatas$.subscribe( value => {
-      this.pieDatas = value;
+    this.subscriptions.push(this.lineDatas$.subscribe( value => {
+      this.lineDatas = value;
       if (this.chartId){
         this.fullChartId += this.chartId;
       }
@@ -56,7 +61,7 @@ export class PieChartComponent implements OnInit, OnDestroy, AfterViewInit {
    * Display the graphic with our object we just received.
    */
   displayGraph(): void {
-    if (this.pieDatas.length == 0) {
+    if (this.lineDatas.length == 0) {
       return;
     }
     this.myChart?.destroy();
@@ -68,11 +73,12 @@ export class PieChartComponent implements OnInit, OnDestroy, AfterViewInit {
         this.myChart.destroy();
       }
       this.myChart = new Chart(ctx, {
-        type: 'pie',
+        type: 'line',
         data: {
-          labels: this.pieDatas.map(data => {return data.name}),
+          labels: this.lineDatas.map(data => {return data.xValue}),
           datasets: [{
-            data: this.pieDatas.map(data => {return data.value}),
+            label: this.lineLabel,
+            data: this.lineDatas.map(data => {return data.yValue}),
           }]
         },
         plugins: [ChartDataLabels],
@@ -82,16 +88,20 @@ export class PieChartComponent implements OnInit, OnDestroy, AfterViewInit {
           },
           animation: false,
           plugins: {
-            legend: {
+            legend: this.customLegendClick ? {
               onClick: this.newLegendClickHandler,
+              display: !this.customLegend,
+              position: 'bottom',
+            } : {
               display: !this.customLegend,
               position: 'bottom',
             },
             tooltip: {
               callbacks: {
                 footer: (tooltipItems: any) => {
+                  console.log(tooltipItems)
                   this.hoveredLabel = tooltipItems[0].label;
-                  return "" }
+                  return String(tooltipItems) }
               }
             }
           },
@@ -108,6 +118,9 @@ export class PieChartComponent implements OnInit, OnDestroy, AfterViewInit {
     //@ts-ignore
     const type = legend.chart.config.type;
     let ci = legend.chart;
+    console.log('LEGEND EVENT : ', e)
+    console.log('LegendItem : ', legendItem)
+    console.log('LegendElement : ', legend)
 
     this.legendClick.emit(legendItem.text);
 
@@ -115,8 +128,5 @@ export class PieChartComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   };
-
-
-
 
 }

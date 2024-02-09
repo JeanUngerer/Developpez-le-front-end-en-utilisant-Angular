@@ -1,1 +1,28 @@
-<p>country-details works!</p>
+<app-banner>
+
+</app-banner>
+
+<div class="page-container">
+  <div class="card-title">{{countryName}}</div>
+
+  <div class="flex-row">
+    <div class="card-headlines"><div>Number of entries</div><div class="text-center-black">{{olympic?.participations?.length}}</div></div>
+    <div class="card-headlines"><div>Total Number of medals</div><div class="text-center-black">{{totalMedals}}</div></div>
+    <div class="card-headlines"><div>Total Number of athletes</div><div class="text-center-black">{{totalAthletes}}</div></div>
+  </div>
+
+  <div class="card">
+    <app-line-chart
+      class="chart-container"
+      id="medalsPieChart"
+      [chartId]="'idd'"
+      [lineDatas$]="lineChartDatas$.asObservable()"
+      [customLegend]="false"
+      [customLegendClick]="true"
+      [lineLabel]="'Medals per Year'"
+    >
+    </app-line-chart>
+    <br/>
+    <a style="text-align: center" routerLink="">Back to all Countries</a>
+  </div>
+</div>

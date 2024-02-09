@@ -1,24 +1,15 @@
 
 
-<div style="width: 100%; display: flex; flex-direction: row; height: 25vh;">
-  <img
-    src="assets/images/16663660107668_P2_banner.png"
-    alt="banner_olympics"
-  />
+<app-banner>
 
-  <img
-    style="width:100%; height:100%;"
-    src="assets/images/bannerfollow.png"
-    alt="banner_rest"
-  />
-</div>
+</app-banner>
 
 <div class="page-container">
   <div class="card-title">Medals per Country</div>
 
   <div class="flex-row">
-    <div class="card-headlines"><div>Number of JOs</div><div class="text-center-black">10</div></div>
-    <div class="card-headlines"><div>Number of Countries</div><div class="text-center-black">10</div></div>
+    <div class="card-headlines"><div>Number of JOs</div><div class="text-center-black">{{numberOfJOs}}</div></div>
+    <div class="card-headlines"><div>Number of Countries</div><div class="text-center-black">{{olympics.length}}</div></div>
   </div>
 
   <div class="card">
@@ -29,6 +20,8 @@
       [pieDatas$]="pieDatas$.asObservable()"
       (legendClick)="ActionOnLegendClick($event)"
       (loadedGraph)="ngAfterViewInit()"
+      (graphClick)="ActionOnLegendClick($event)"
+      [customLegend]="true"
     >
     </app-pie-chart>
   </div>

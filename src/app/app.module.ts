@@ -7,9 +7,11 @@ import { HomeComponent } from './pages/home/home.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { PieChartComponent } from './components/pie-chart/pie-chart.component';
 import { CountryDetailsComponent } from './pages/country-details/country-details.component';
+import { BannerComponent } from './components/banner/banner.component';
+import { LineChartComponent } from './components/line-chart/line-chart.component';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, NotFoundComponent, PieChartComponent, CountryDetailsComponent],
+  declarations: [AppComponent, HomeComponent, NotFoundComponent, PieChartComponent, CountryDetailsComponent, BannerComponent, LineChartComponent],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule],
   providers: [],
   bootstrap: [AppComponent],
