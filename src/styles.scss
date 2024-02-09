@@ -64,5 +64,13 @@
 }
 
 .chart-container{
+  width: 60vw;
   position: relative;
+}
+
+@media (max-width: 580px) {
+  .chart-container{
+    width: 95vw;
+    position: relative;
+  }
 }

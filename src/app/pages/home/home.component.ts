@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, HostListener} from '@angular/core';
 import {BehaviorSubject, Observable, of, Subscription} from 'rxjs';
 import { OlympicService } from 'src/app/core/services/olympic.service';
 import {Olympic} from "../../core/models/dtos/Olympic";
@@ -17,13 +17,26 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   public pieDatas$= new BehaviorSubject<MyPieChartData[]>([]);
   private pieDatas: MyPieChartData[] = [];
   public pieDataLoaded = false;
+  getScreenWidth = 1200;
+  getScreenHeight = 0;
 
   private subscriptions: Subscription[] = [];
 
   constructor(
     private olympicService: OlympicService,
     public router: Router,
-  ) {}
+  ) {
+    this.onWindowResize();
+  }
+
+
+  @HostListener('window:resize', ['$event'])
+  onWindowResize() {
+    this.getScreenWidth = window.innerWidth;
+    this.getScreenHeight = window.innerHeight;
+    console.log('this.getScreenWidth : ', this.getScreenWidth)
+    console.log('this.getScreenHeight : ', this.getScreenHeight)
+  }
 
   ngOnInit(): void {
     this.olympics$ = this.olympicService.getOlympics();
@@ -56,8 +69,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   ngAfterViewInit(): void {
     const legendContainer = document.getElementById('medalsPieChart');
     console.log(legendContainer);
-    if(legendContainer) {
+    if(legendContainer && this.getScreenWidth>580) {
       const rayon = legendContainer.offsetHeight/2;
+       const widthOffset = (legendContainer.offsetWidth - legendContainer.offsetHeight)/2;
       console.log('Rayon : ', rayon)
       console.log('Values : ', this.pieDatas)
       const totalMedals = this.pieDatas.map(elem => elem.value).reduce((a, b) => a + b, 0);
@@ -105,11 +119,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
         if(leftOffset < 0) {
-          listContainer.style.left = String(leftOffset) + 'px';
-          arrowContainer.style.left = String(-rayon) + 'px';
+          listContainer.style.left = String(widthOffset + leftOffset) + 'px';
+          arrowContainer.style.left = String(widthOffset - rayon) + 'px';
         } else {
-          listContainer.style.right = String(rightOffset) + 'px';
-          arrowContainer.style.right = String(-rayon) + 'px';
+          listContainer.style.right = String(widthOffset + rightOffset) + 'px';
+          arrowContainer.style.right = String(widthOffset - rayon) + 'px';
         }
         listContainer.style.top = String( height - 12) + 'px';
 

@@ -21,7 +21,7 @@
       (legendClick)="ActionOnLegendClick($event)"
       (loadedGraph)="ngAfterViewInit()"
       (graphClick)="ActionOnLegendClick($event)"
-      [customLegend]="true"
+      [customLegend]="this.getScreenWidth>580"
     >
     </app-pie-chart>
   </div>

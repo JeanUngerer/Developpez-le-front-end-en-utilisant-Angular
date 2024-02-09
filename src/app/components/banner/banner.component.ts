@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-banner',
@@ -6,8 +6,19 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./banner.component.scss']
 })
 export class BannerComponent implements OnInit {
+  getScreenWidth = 1200;
+  getScreenHeight = 0;
+  constructor() {
+    this.onWindowResize();
+  }
 
-  constructor() { }
+  @HostListener('window:resize', ['$event'])
+  onWindowResize() {
+    this.getScreenWidth = window.innerWidth;
+    this.getScreenHeight = window.innerHeight;
+    console.log('this.getScreenWidth : ', this.getScreenWidth)
+    console.log('this.getScreenHeight : ', this.getScreenHeight)
+  }
 
   ngOnInit(): void {
   }
