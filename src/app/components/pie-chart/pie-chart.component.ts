@@ -29,9 +29,12 @@ export class PieChartComponent implements OnInit, OnDestroy, AfterViewInit {
 
   constructor(
   ) {
+
   }
 
   ngOnInit(): void {
+    console.log("INNIIIIIT PIEE")
+    //this.ngAfterViewInit();
   }
 
   ngAfterViewInit(): void {
@@ -41,14 +44,15 @@ export class PieChartComponent implements OnInit, OnDestroy, AfterViewInit {
         this.fullChartId += this.chartId;
       }
       this.displayGraph()
-      this.loadedGraph.emit('loaded');
-      console.log('nexted : ', value)
-    }));
+
+      console.log('nexted piedatas: ', value)
+      }));
   }
 
   ngOnDestroy(): void {
+    console.log("DESTROY PIEE")
     this.subscriptions.forEach(sub => (sub).unsubscribe());
-    //this.myChart?.destroy();
+    this.myChart?.destroy();
   }
 
 
@@ -56,17 +60,26 @@ export class PieChartComponent implements OnInit, OnDestroy, AfterViewInit {
    * Display the graphic with our object we just received.
    */
   displayGraph(): void {
+    console.log("GRAPH PIEE, datas : ", this.pieDatas)
     if (this.pieDatas.length == 0) {
       return;
     }
-    this.myChart?.destroy();
-    const canvas = document.getElementById('fullChartId') as HTMLCanvasElement;
-    const ctx = canvas.getContext('2d');
+    //this.myChart?.destroy();
+    let canvas = document.getElementById('fullPieChartId') as HTMLCanvasElement;
+    let ctx = canvas.getContext('2d');
+
+    console.log("CANVAS : ", canvas)
+    console.log("CTX : ", ctx)
+    if (this.myChart != null){
+      this.myChart.destroy();
+      canvas = document.getElementById('fullPieChartId') as HTMLCanvasElement;
+      ctx = canvas.getContext('2d');
+      console.log("CANVAS IN : ", canvas)
+      console.log("CTX IN : ", ctx)
+    }
 
     if (ctx != null) {
-      if (this.myChart != null){
-        this.myChart.destroy();
-      }
+
       this.myChart = new Chart(ctx, {
         type: 'pie',
         data: {
@@ -100,6 +113,7 @@ export class PieChartComponent implements OnInit, OnDestroy, AfterViewInit {
         },
       });
     }
+    this.loadedGraph.emit('loaded');
   }
 
 

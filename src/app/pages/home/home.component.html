@@ -14,12 +14,13 @@
 
   <div class="card">
     <app-pie-chart
+      *ngIf="pieDataLoaded"
       class="chart-container"
       id="medalsPieChart"
       [chartId]="'idd'"
       [pieDatas$]="pieDatas$.asObservable()"
       (legendClick)="ActionOnLegendClick($event)"
-      (loadedGraph)="ngAfterViewInit()"
+      (loadedGraph)="viewInit()"
       (graphClick)="ActionOnLegendClick($event)"
       [customLegend]="this.getScreenWidth>580"
     >

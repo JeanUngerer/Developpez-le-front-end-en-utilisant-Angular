@@ -17,6 +17,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   public pieDatas$= new BehaviorSubject<MyPieChartData[]>([]);
   private pieDatas: MyPieChartData[] = [];
   public pieDataLoaded = false;
+
+  public graphBuilt = false;
   getScreenWidth = 1200;
   getScreenHeight = 0;
 
@@ -39,6 +41,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.pieDataLoaded = false;
+    console.log("INITTT")
     this.olympics$ = this.olympicService.getOlympics();
     this.subscriptions.push(this.olympics$.subscribe(val => {
       this.olympics = val;
@@ -48,11 +52,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         (value, index, array) => {
           return array.indexOf(value) === index;
         }).length;
-      console.log('flatMap : ', val.flatMap(elem => elem.participations.map(part => part.year)).filter(
-        (value, index, array) => {
-        return array.indexOf(value) === index;
-      }), ' - length : ', this.numberOfJOs);
+
       this.pieDataLoaded = true;
+      // this.viewInit();
     }));
   }
 
@@ -61,21 +63,24 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ActionOnLegendClick(countryName: string): void {
-    console.log(countryName);
     this.router.navigate([`country/${countryName}`]);
   }
 
-
   ngAfterViewInit(): void {
+
+  }
+
+  viewInit(): void {
+    console.log("=======================")
+    console.log("GRAPH LOADED")
+    console.log("=======================")
+
     const legendContainer = document.getElementById('medalsPieChart');
-    console.log(legendContainer);
     if(legendContainer && this.getScreenWidth>580) {
+      console.log("LEGEND CONTAINER : ", legendContainer)
       const rayon = legendContainer.offsetHeight/2;
        const widthOffset = (legendContainer.offsetWidth - legendContainer.offsetHeight)/2;
-      console.log('Rayon : ', rayon)
-      console.log('Values : ', this.pieDatas)
       const totalMedals = this.pieDatas.map(elem => elem.value).reduce((a, b) => a + b, 0);
-      console.log('Total Medals : ', totalMedals);
       let start = 0;
       let end = 0;
 

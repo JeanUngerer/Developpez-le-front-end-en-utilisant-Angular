@@ -47,13 +47,12 @@ export class LineChartComponent implements OnInit, OnDestroy, AfterViewInit {
       }
       this.displayGraph()
       this.loadedGraph.emit('loaded');
-      console.log('nexted : ', value)
     }));
   }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(sub => (sub).unsubscribe());
-    //this.myChart?.destroy();
+    this.myChart?.destroy();
   }
 
 
@@ -65,7 +64,7 @@ export class LineChartComponent implements OnInit, OnDestroy, AfterViewInit {
       return;
     }
     this.myChart?.destroy();
-    const canvas = document.getElementById('fullChartId') as HTMLCanvasElement;
+    const canvas = document.getElementById('fullLineChartId') as HTMLCanvasElement;
     const ctx = canvas.getContext('2d');
 
     if (ctx != null) {
@@ -99,7 +98,6 @@ export class LineChartComponent implements OnInit, OnDestroy, AfterViewInit {
             tooltip: {
               callbacks: {
                 footer: (tooltipItems: any) => {
-                  console.log(tooltipItems)
                   this.hoveredLabel = tooltipItems[0].label;
                   return String(tooltipItems) }
               }
@@ -118,9 +116,6 @@ export class LineChartComponent implements OnInit, OnDestroy, AfterViewInit {
     //@ts-ignore
     const type = legend.chart.config.type;
     let ci = legend.chart;
-    console.log('LEGEND EVENT : ', e)
-    console.log('LegendItem : ', legendItem)
-    console.log('LegendElement : ', legend)
 
     this.legendClick.emit(legendItem.text);
 

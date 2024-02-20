@@ -16,8 +16,6 @@ export class BannerComponent implements OnInit {
   onWindowResize() {
     this.getScreenWidth = window.innerWidth;
     this.getScreenHeight = window.innerHeight;
-    console.log('this.getScreenWidth : ', this.getScreenWidth)
-    console.log('this.getScreenHeight : ', this.getScreenHeight)
   }
 
   ngOnInit(): void {
